@@ -20,7 +20,7 @@ if st.button("BMI berechnen"):
     if bmi < 18.5:
         color = "blue"
         category = "Untergewicht"
-        st.image("https://tenor.com/bCjng.gif", caption="Trauriger Peter Griffin 😞")
+        st.image("https://media.tenor.com/-KljfnsHufIAAAAM/peter-family.gif", caption="Trauriger Peter Griffin 😞")
     elif 18.5 <= bmi < 25:
         color = "green"
         category = "Normalgewicht"
@@ -28,11 +28,11 @@ if st.button("BMI berechnen"):
     elif 25 <= bmi < 30:
         color = "yellow"
         category = "Übergewicht"
-        st.image("https://tenor.com/bCjng.gif", caption="Trauriger Peter Griffin 😞")
+        st.image("https://media.tenor.com/-KljfnsHufIAAAAM/peter-family.gif", caption="Trauriger Peter Griffin 😞")
     else:
         color = "red"
         category = "Adipositas (Fettleibigkeit)"
-        st.image("https://tenor.com/bCjng.gif", caption="Trauriger Peter Griffin 😞")
+        st.image("https://media.tenor.com/-KljfnsHufIAAAAM/peter-family.gif", caption="Trauriger Peter Griffin 😞")
 
     # Anzeige des BMI-Werts mit Farbskala
     st.markdown(
