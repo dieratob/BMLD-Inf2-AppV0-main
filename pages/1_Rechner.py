@@ -1,4 +1,5 @@
 import streamlit as st
+from bmi_calculator import calculate_bmi
 
 # App-Konfiguration
 st.set_page_config(page_title="BMI Rechner", page_icon="⚖️")
@@ -13,25 +14,23 @@ height = st.number_input("Größe (m)", min_value=0.5, max_value=2.5, value=1.75
 
 # BMI Berechnung
 if st.button("BMI berechnen"):
-    bmi = weight / (height ** 2)
-    st.write(f"**Dein BMI beträgt:** {bmi:.2f}")
+    try:
+        result = calculate_bmi(weight, height)
+        st.write(f"**Dein BMI beträgt:** {result['bmi']:.2f}")
 
-    # Farbcodierung basierend auf BMI-Kategorien
-    if bmi < 18.5:
-        color = "blue"
-        category = "Untergewicht"
-    elif 18.5 <= bmi < 25:
-        color = "green"
-        category = "Normalgewicht"
-    elif 25 <= bmi < 30:
-        color = "yellow"
-        category = "Übergewicht"
-    else:
-        color = "red"
-        category = "Adipositas (Fettleibigkeit)"
+        # Farbcodierung basierend auf BMI-Kategorien
+        color_mapping = {
+            "Untergewicht": "blue",
+            "Normalgewicht": "green",
+            "Übergewicht": "yellow",
+            "Adipositas": "red"
+        }
+        color = color_mapping.get(result["category"], "gray")
 
-    # Anzeige des BMI-Werts mit Farbskala
-    st.markdown(
-        f'<div style="padding:10px; border-radius:5px; background-color:{color}; color:white; font-size:20px; text-align:center;">'
-        f'{category}</div>', unsafe_allow_html=True
-    )
+        # Anzeige des BMI-Werts mit Farbskala
+        st.markdown(
+            f'<div style="padding:10px; border-radius:5px; background-color:{color}; color:white; font-size:20px; text-align:center;">'
+            f'{result["category"]}</div>', unsafe_allow_html=True
+        )
+    except ValueError as e:
+        st.error(str(e))
