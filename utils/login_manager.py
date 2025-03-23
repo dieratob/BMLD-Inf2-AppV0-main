@@ -137,17 +137,16 @@ class LoginManager:
             if submit_button:
                 if password == password_confirm:
                     # Hier wird die Registrierung durchgeführt
-                    res = self.authenticator.register_user(username=username, password=password)
-                    
-                    if res[1] is not None:
-                        st.success(f"User {res[1]} registered successfully")
-                        try:
-                            self._save_auth_credentials()
-                            st.success("Credentials saved successfully")
-                        except Exception as e:
-                            st.error(f"Failed to save credentials: {e}")
-                    else:
-                        st.error("Registration failed. Please check your credentials and try again.")
+                    try:
+                        self.authenticator.register_user(username=username, password=password)
+                        st.success(f"User {username} registered successfully")
+
+                        # Die Authentifizierung speichert die Anmeldedaten
+                        self._save_auth_credentials()
+                        st.success("Credentials saved successfully")
+
+                    except Exception as e:
+                        st.error(f"Registration failed: {e}")
                 else:
                     st.error("Passwords do not match.")
 
