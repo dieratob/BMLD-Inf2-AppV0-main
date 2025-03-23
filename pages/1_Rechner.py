@@ -1,5 +1,4 @@
 import streamlit as st
-from bmi_calculator import calculate_bmi
 
 # App-Konfiguration
 st.set_page_config(page_title="BMI Rechner", page_icon="⚖️")
