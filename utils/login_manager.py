@@ -106,7 +106,7 @@ class LoginManager:
             if stop:
                 st.stop()
 
-    def register(self,stop=True):
+    def register(self, stop=True):
         """
         Renders the registration form and handles user registration flow.
         
@@ -121,14 +121,28 @@ class LoginManager:
             The password must be 8-20 characters long and include at least one uppercase letter, 
             one lowercase letter, one digit, and one special character from @$!%*?&.
             """)
-            res = self.authenticator.register_user()
-            if res[1] is not None:
-                st.success(f"User {res[1]} registered successfully")
-                try:
-                    self._save_auth_credentials()
-                    st.success("Credentials saved successfully")
-                except Exception as e:
-                    st.error(f"Failed to save credentials: {e}")
+
+            # Registrierung Formular
+            username = st.text_input("Username")
+            password = st.text_input("Password", type="password")
+            
+            # Button für Registrierung
+            submit_button = st.button("Submit Registration")
+
+            if submit_button:
+                # Hier überprüft man, ob der Benutzername und das Passwort den Anforderungen entsprechen
+                res = self.authenticator.register_user(username=username, password=password)
+                
+                if res[1] is not None:
+                    st.success(f"User {res[1]} registered successfully")
+                    try:
+                        self._save_auth_credentials()
+                        st.success("Credentials saved successfully")
+                    except Exception as e:
+                        st.error(f"Failed to save credentials: {e}")
+                else:
+                    st.error("Registration failed. Please check your credentials and try again.")
+            
             if stop:
                 st.stop()
 
@@ -143,4 +157,4 @@ class LoginManager:
         if st.session_state.get("authentication_status") is not True:
             st.switch_page(login_page_py_file)
         else:
-            self.authenticator.logout() # create logout button
+            self.authenticator.logout()  # create logout button
