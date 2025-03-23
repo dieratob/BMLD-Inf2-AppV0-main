@@ -113,7 +113,6 @@ class LoginManager:
         Displays password requirements, processes registration attempts,
         and saves credentials on successful registration.
         """
-
         if st.session_state.get("authentication_status") is True:
             self.authenticator.logout()
         else:
@@ -136,17 +135,13 @@ class LoginManager:
 
             if submit_button:
                 if password == password_confirm:
-                    # Die Authentifizierungs-Bibliothek erwartet ein Dictionary
-                    new_user = {username: {"password": password}}
-                    
-                    # Benutzer registrieren
-                    self.auth_credentials["usernames"].update(new_user)
+                    # Benutzerregistrierung mit stauth
                     try:
+                        self.authenticator.register_user(username=username, password=password)
+                        st.success(f"User {username} registered successfully")
                         # Speichern der Benutzeranmeldedaten
                         self._save_auth_credentials()
-                        st.success(f"User {username} registered successfully")
                         st.success("Credentials saved successfully")
-
                     except Exception as e:
                         st.error(f"Registration failed: {e}")
                 else:
