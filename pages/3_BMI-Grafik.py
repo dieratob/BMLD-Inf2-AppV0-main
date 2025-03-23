@@ -8,7 +8,6 @@ LoginManager().go_to_login('Start.py')
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 # Titel der Seite
 st.title('BMI Verlauf')
@@ -18,9 +17,6 @@ data_df = st.session_state['data_df']
 if data_df.empty:
     st.info('Keine BMI Daten vorhanden. Berechnen Sie Ihren BMI auf der Startseite.')
     st.stop()
-
-# Stil für Matplotlib und Seaborn setzen
-sns.set(style="whitegrid")
 
 # Erstelle die Plots
 fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(10, 12))
