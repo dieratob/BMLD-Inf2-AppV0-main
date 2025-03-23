@@ -121,32 +121,18 @@ class LoginManager:
             one lowercase letter, one digit, and one special character from @$!%*?&.
             """)
 
-            # Registrierung Formular
-            username = st.text_input("Username")
-            password = st.text_input("Password", type="password")
-            password_confirm = st.text_input("Confirm Password", type="password")
-            
-            # Überprüfen, ob Passwörter übereinstimmen
-            if password != password_confirm:
-                st.error("Passwords do not match.")
-            
-            # Button für Registrierung
-            submit_button = st.button("Submit Registration")
+            # Verwendung von stauth zur Registrierung
+            username, password, name, authentication_status = self.authenticator.register_user()
 
-            if submit_button:
-                if password == password_confirm:
-                    # Benutzerregistrierung mit stauth
-                    try:
-                        self.authenticator.register_user(username=username, password=password)
-                        st.success(f"User {username} registered successfully")
-                        # Speichern der Benutzeranmeldedaten
-                        self._save_auth_credentials()
-                        st.success("Credentials saved successfully")
-                    except Exception as e:
-                        st.error(f"Registration failed: {e}")
+            if authentication_status is not None:
+                if authentication_status:
+                    st.success(f"User {username} registered successfully")
+                    # Speichern der Benutzeranmeldedaten
+                    self._save_auth_credentials()
+                    st.success("Credentials saved successfully")
                 else:
-                    st.error("Passwords do not match.")
-
+                    st.error("Registration failed. Please check your inputs.")
+            
             if stop:
                 st.stop()
 
