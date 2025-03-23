@@ -136,13 +136,15 @@ class LoginManager:
 
             if submit_button:
                 if password == password_confirm:
-                    # Hier wird die Registrierung durchgeführt
+                    # Die Authentifizierungs-Bibliothek erwartet ein Dictionary
+                    new_user = {username: {"password": password}}
+                    
+                    # Benutzer registrieren
+                    self.auth_credentials["usernames"].update(new_user)
                     try:
-                        self.authenticator.register_user(username=username, password=password)
-                        st.success(f"User {username} registered successfully")
-
-                        # Die Authentifizierung speichert die Anmeldedaten
+                        # Speichern der Benutzeranmeldedaten
                         self._save_auth_credentials()
+                        st.success(f"User {username} registered successfully")
                         st.success("Credentials saved successfully")
 
                     except Exception as e:
