@@ -23,7 +23,6 @@ data_manager.load_user_data(
 
 
 import streamlit as st
-import pandas as pd
 
 st.title("Meine erste Streamlit App")
 
