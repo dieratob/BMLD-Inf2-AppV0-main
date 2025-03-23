@@ -2,7 +2,7 @@ import secrets
 import streamlit as st
 import streamlit_authenticator as stauth
 from utils.data_manager import DataManager
-
+import pickle
 
 class LoginManager:
     """
@@ -15,9 +15,6 @@ class LoginManager:
     def __new__(cls, *args, **kwargs):
         """
         Implements singleton pattern by returning existing instance from session state if available.
-
-        Returns:
-            AppManager: The singleton instance, either existing or newly created
         """
         if 'login_manager' in st.session_state:
             return st.session_state.login_manager
@@ -31,9 +28,6 @@ class LoginManager:
                  auth_cookie_name: str = 'bmld_inf2_streamlit_app'):
         """
         Initializes filesystem and authentication components if not already initialized.
-
-        Sets up filesystem access using the specified protocol and configures authentication
-        with cookie-based session management.
 
         Args:
             Data_manager: The DataManager instance to use for data storage
@@ -58,29 +52,31 @@ class LoginManager:
     def _load_auth_credentials(self):
         """
         Loads user credentials from the configured credentials file.
-
-        Returns:
-            dict: User credentials, defaulting to empty usernames dict if file not found
         """
         dh = self.data_manager._get_data_handler()
-        return dh.load(self.auth_credentials_file, initial_value= {"usernames": {}})
+        try:
+            return dh.load(self.auth_credentials_file, initial_value={"usernames": {}})
+        except Exception as e:
+            st.error(f"Fehler beim Laden der Anmeldedaten: {e}")
+            return {"usernames": {}}
 
     def _save_auth_credentials(self):
         """
         Saves current user credentials to the credentials file.
         """
         dh = self.data_manager._get_data_handler()
-        dh.save(self.auth_credentials_file, self.auth_credentials)
+        try:
+            dh.save(self.auth_credentials_file, self.auth_credentials)
+            st.success("Anmeldedaten wurden erfolgreich gespeichert.")
+        except Exception as e:
+            st.error(f"Fehler beim Speichern der Anmeldedaten: {e}")
 
-    def login_register(self, login_title = 'Login', register_title = 'Register new user'):
+    def login_register(self, login_title='Login', register_title='Register new user'):
         """
         Renders the authentication interface.
         
         Displays login form and optional registration form. Handles user authentication
         and registration flows. Stops further execution after rendering.
-        
-        Args:
-            show_register_tab: If True, shows registration option alongside login
         """
         if st.session_state.get("authentication_status") is True:
             self.authenticator.logout()
@@ -103,17 +99,20 @@ class LoginManager:
                 st.error("Username/password is incorrect")
             else:
                 st.warning("Please enter your username and password")
+                # Speichern des Logins, wenn erfolgreich
+                if st.session_state["authentication_status"] is True:
+                    st.session_state['username'] = self.authenticator.get_username()
+                    self._save_auth_credentials()  # Speichern der Anmeldedaten
             if stop:
                 st.stop()
 
-    def register(self,stop=True):
+    def register(self, stop=True):
         """
         Renders the registration form and handles user registration flow.
         
         Displays password requirements, processes registration attempts,
         and saves credentials on successful registration.
         """
-
         if st.session_state.get("authentication_status") is True:
             self.authenticator.logout()
         else:
@@ -124,9 +123,9 @@ class LoginManager:
             res = self.authenticator.register_user()
             if res[1] is not None:
                 st.success(f"User {res[1]} registered successfully")
+                # Speichern der neuen Anmeldedaten
                 try:
                     self._save_auth_credentials()
-                    st.success("Credentials saved successfully")
                 except Exception as e:
                     st.error(f"Failed to save credentials: {e}")
             if stop:
@@ -143,4 +142,4 @@ class LoginManager:
         if st.session_state.get("authentication_status") is not True:
             st.switch_page(login_page_py_file)
         else:
-            self.authenticator.logout() # create logout button
+            self.authenticator.logout()  # logout button
