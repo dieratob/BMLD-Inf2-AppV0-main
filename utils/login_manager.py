@@ -125,24 +125,32 @@ class LoginManager:
             # Registrierung Formular
             username = st.text_input("Username")
             password = st.text_input("Password", type="password")
+            password_confirm = st.text_input("Confirm Password", type="password")
+            
+            # Überprüfen, ob Passwörter übereinstimmen
+            if password != password_confirm:
+                st.error("Passwords do not match.")
             
             # Button für Registrierung
             submit_button = st.button("Submit Registration")
 
             if submit_button:
-                # Hier überprüft man, ob der Benutzername und das Passwort den Anforderungen entsprechen
-                res = self.authenticator.register_user(username=username, password=password)
-                
-                if res[1] is not None:
-                    st.success(f"User {res[1]} registered successfully")
-                    try:
-                        self._save_auth_credentials()
-                        st.success("Credentials saved successfully")
-                    except Exception as e:
-                        st.error(f"Failed to save credentials: {e}")
+                if password == password_confirm:
+                    # Hier wird die Registrierung durchgeführt
+                    res = self.authenticator.register_user(username=username, password=password)
+                    
+                    if res[1] is not None:
+                        st.success(f"User {res[1]} registered successfully")
+                        try:
+                            self._save_auth_credentials()
+                            st.success("Credentials saved successfully")
+                        except Exception as e:
+                            st.error(f"Failed to save credentials: {e}")
+                    else:
+                        st.error("Registration failed. Please check your credentials and try again.")
                 else:
-                    st.error("Registration failed. Please check your credentials and try again.")
-            
+                    st.error("Passwords do not match.")
+
             if stop:
                 st.stop()
 
