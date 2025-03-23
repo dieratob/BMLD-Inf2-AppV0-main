@@ -1,6 +1,6 @@
 from utils import helpers
 
-def calculate_bmi(weight, height, timezone='Europe/Zurich'):
+def calculate_bmi(height, weight, timezone='Europe/Zurich'):
     """
     Calculate BMI and return a dictionary with inputs, BMI, category, and timestamp.
 
