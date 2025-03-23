@@ -1,58 +1,32 @@
-import secrets
+import pickle
 import streamlit as st
+import secrets
 import streamlit_authenticator as stauth
 from utils.data_manager import DataManager
-import pickle
 
 class LoginManager:
-    """
-    Singleton class that manages application state, storage, and user authentication.
-    
-    Handles filesystem access, user credentials, and authentication state using Streamlit's
-    session state for persistence across reruns. Provides interfaces for accessing user-specific
-    and application-wide data storage.
-    """
-    def __new__(cls, *args, **kwargs):
-        """
-        Implements singleton pattern by returning existing instance from session state if available.
-        """
-        if 'login_manager' in st.session_state:
-            return st.session_state.login_manager
-        else:
-            instance = super(LoginManager, cls).__new__(cls)
-            st.session_state.login_manager = instance
-            return instance
-    
     def __init__(self, data_manager: DataManager = None,
                  auth_credentials_file: str = 'credentials.yaml',
-                 auth_cookie_name: str = 'bmld_inf2_streamlit_app'):
-        """
-        Initializes filesystem and authentication components if not already initialized.
-
-        Args:
-            Data_manager: The DataManager instance to use for data storage
-            auth_credentials_file (str): The filename to use for storing user credentials
-            auth_cookie_name (str): The name of the cookie to use for session management
-        """
+                 auth_cookie_name: str = 'bmld_inf2_streamlit_app',
+                 user_session_file: str = 'user_session.pkl'):
         if hasattr(self, 'authenticator'):  # check if instance is already initialized
             return
         
         if data_manager is None:
             return
 
-        # initialize streamlit authentication stuff
         self.data_manager = data_manager
         self.auth_credentials_file = auth_credentials_file
         self.auth_cookie_name = auth_cookie_name
+        self.user_session_file = user_session_file  # Datei für persistente Anmeldedaten
         self.auth_cookie_key = secrets.token_urlsafe(32)
         self.auth_credentials = self._load_auth_credentials()
         self.authenticator = stauth.Authenticate(self.auth_credentials, self.auth_cookie_name, self.auth_cookie_key)
-
+        
+        # Überprüfen, ob eine gespeicherte Sitzung existiert und laden
+        self._load_user_session()
 
     def _load_auth_credentials(self):
-        """
-        Loads user credentials from the configured credentials file.
-        """
         dh = self.data_manager._get_data_handler()
         try:
             return dh.load(self.auth_credentials_file, initial_value={"usernames": {}})
@@ -61,9 +35,6 @@ class LoginManager:
             return {"usernames": {}}
 
     def _save_auth_credentials(self):
-        """
-        Saves current user credentials to the credentials file.
-        """
         dh = self.data_manager._get_data_handler()
         try:
             dh.save(self.auth_credentials_file, self.auth_credentials)
@@ -71,12 +42,34 @@ class LoginManager:
         except Exception as e:
             st.error(f"Fehler beim Speichern der Anmeldedaten: {e}")
 
+    def _load_user_session(self):
+        """
+        Lädt die Benutzersitzung aus der persistierten Datei.
+        """
+        try:
+            with open(self.user_session_file, 'rb') as f:
+                session_data = pickle.load(f)
+                if session_data:
+                    st.session_state['username'] = session_data['username']
+                    st.session_state['authentication_status'] = session_data['authentication_status']
+        except FileNotFoundError:
+            st.session_state['authentication_status'] = False
+            st.session_state['username'] = None
+
+    def _save_user_session(self):
+        """
+        Speichert die Benutzersitzung in einer Datei.
+        """
+        with open(self.user_session_file, 'wb') as f:
+            session_data = {
+                'username': st.session_state.get('username'),
+                'authentication_status': st.session_state.get('authentication_status')
+            }
+            pickle.dump(session_data, f)
+
     def login_register(self, login_title='Login', register_title='Register new user'):
         """
-        Renders the authentication interface.
-        
-        Displays login form and optional registration form. Handles user authentication
-        and registration flows. Stops further execution after rendering.
+        Zeigt das Login- und Registrierungsformular an.
         """
         if st.session_state.get("authentication_status") is True:
             self.authenticator.logout()
@@ -89,57 +82,44 @@ class LoginManager:
 
     def login(self, stop=True):
         """
-        Renders the login form and handles authentication status messages.
+        Zeigt das Login-Formular und behandelt den Authentifizierungsstatus.
         """
         if st.session_state.get("authentication_status") is True:
             self.authenticator.logout()
         else:
             self.authenticator.login()
             if st.session_state["authentication_status"] is False:
-                st.error("Username/password is incorrect")
+                st.error("Benutzername/Passwort ist inkorrekt.")
             else:
-                st.warning("Please enter your username and password")
-                # Speichern des Logins, wenn erfolgreich
-                if st.session_state["authentication_status"] is True:
-                    st.session_state['username'] = self.authenticator.get_username()
-                    self._save_auth_credentials()  # Speichern der Anmeldedaten
+                st.session_state['username'] = self.authenticator.get_username()
+                st.session_state['authentication_status'] = True
+                self._save_user_session()  # Sitzung speichern, wenn Anmeldung erfolgreich
             if stop:
                 st.stop()
 
     def register(self, stop=True):
         """
-        Renders the registration form and handles user registration flow.
-        
-        Displays password requirements, processes registration attempts,
-        and saves credentials on successful registration.
+        Zeigt das Registrierungsformular und behandelt die Benutzerregistrierung.
         """
         if st.session_state.get("authentication_status") is True:
             self.authenticator.logout()
         else:
             st.info("""
-            The password must be 8-20 characters long and include at least one uppercase letter, 
-            one lowercase letter, one digit, and one special character from @$!%*?&.
+            Das Passwort muss 8-20 Zeichen lang sein und mindestens einen Großbuchstaben, 
+            einen Kleinbuchstaben, eine Zahl und ein Sonderzeichen enthalten.
             """)
             res = self.authenticator.register_user()
             if res[1] is not None:
-                st.success(f"User {res[1]} registered successfully")
-                # Speichern der neuen Anmeldedaten
-                try:
-                    self._save_auth_credentials()
-                except Exception as e:
-                    st.error(f"Failed to save credentials: {e}")
+                st.success(f"Benutzer {res[1]} wurde erfolgreich registriert.")
+                self._save_auth_credentials()
             if stop:
                 st.stop()
 
     def go_to_login(self, login_page_py_file):
         """
-        Create a logout button that logs the user out and redirects to the login page.
-        If the user is not logged in, the login page is displayed.
-
-        Parameters
-        - login_page_py_file (str): The path to the Python file that contains the login page
+        Führt den Benutzer zur Login-Seite weiter, wenn er nicht angemeldet ist.
         """
         if st.session_state.get("authentication_status") is not True:
             st.switch_page(login_page_py_file)
         else:
-            self.authenticator.logout()  # logout button
+            self.authenticator.logout()  # Logout-Button
