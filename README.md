@@ -2,6 +2,5 @@
 
 ## Autoren
 
-Tobias Dierauer (dieratob@students.zhaw.ch)
-Anselmo Assetta (assetans@students.zhaw.ch)
+Tobias Dierauer (dieratob@students.zhaw.ch) & Anselmo Assetta (assetans@students.zhaw.ch)
 
