@@ -2,7 +2,7 @@
 import streamlit as st
 from kombis import kombiniere
 
-# MVP: 4 Startbegriffe
+# MVP: Mit 4 Startbegriffe
 STARTBEGRIFFE = ["Stammzelle", "Blut", "Immunsystem", "Knochenmark"]
 
 # Session-State initialisieren
