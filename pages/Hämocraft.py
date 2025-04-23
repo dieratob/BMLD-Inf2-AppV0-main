@@ -1,3 +1,11 @@
+import sys
+import os
+
+# Kombis.py liegt eine Ebene höher (über 'pages/')
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from kombis import kombiniere
+
 # main.py
 import streamlit as st
 from kombis import kombiniere
