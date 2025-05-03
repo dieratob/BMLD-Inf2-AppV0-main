@@ -8,4 +8,4 @@
 - Die Roadmap wurde bereits anhand der in der Vorlesung angesprochenen Kritikpunkte und der Definition des MVP und deren Umsetzung angepasst.
 
 ## Welche Unterstützung brauchen wir um unsere Ziele zu erreichen?
-- Eine Beratung bezüglich Xy-Paket in Streamlit um die Drag&-Drop-Funktion zu ermöglichen würde das Nutzererlebnis massgebend verbessern.
+- Eine Beratung bezüglich Streamlit-Sortables oder per JavaScript (eigene Streamlitkomponenten erstellen) um die Drag&-Drop-Funktion zu ermöglichen, dies würde das Nutzererlebnis massgebend verbessern.
