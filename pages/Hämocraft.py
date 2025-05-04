@@ -1,16 +1,12 @@
 import sys
 import os
 
-# Kombis.py liegt eine Ebene höher (über 'pages/')
+# Kombis.py liegt eine Ebene höher
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from kombis import kombiniere
 
-# main.py
 import streamlit as st
-from kombis import kombiniere
 
-# MVP: Mit 4 Startbegriffe
 STARTBEGRIFFE = ["Stammzelle", "Blut", "Immunsystem", "Knochenmark"]
 
 # Session-State initialisieren
@@ -18,10 +14,9 @@ if "entdeckte" not in st.session_state:
     st.session_state.entdeckte = set(STARTBEGRIFFE)
 
 st.title("🧬 Hämatologie Learning Game – MVP")
-
 st.subheader("🔬 Begriffe kombinieren")
-begriff_liste = sorted(st.session_state.entdeckte)
 
+begriff_liste = sorted(st.session_state.entdeckte)
 col1, col2 = st.columns(2)
 with col1:
     begriff1 = st.selectbox("Begriff 1", begriff_liste)
