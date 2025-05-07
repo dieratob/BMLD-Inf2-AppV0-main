@@ -1,25 +1,22 @@
 import streamlit as st
 
-# Session-State initialisieren (falls noch nicht vorhanden)
-if "entdeckte" not in st.session_state:
-    st.session_state.entdeckte = set(["Stammzelle", "Blut", "Immunsystem", "Knochenmark"])
+# Begriff aus der URL abholen
+begriff = st.query_params.get("name")
 
-# Überschrift und Beschreibung
-st.title("🧬 Hämatologie Learning Game – Begriff hinzufügen")
-st.caption("Füge neue Begriffe hinzu, die du entdeckt hast.")
+# Titel der Seite
+st.title(f"🔍 Detailansicht: {begriff}")
 
-# Eingabe für den Begriff
-begriff = st.text_input("Begriff hinzufügen", "")
-
-# Button, um den Begriff zu speichern
-if st.button("Begriff hinzufügen"):
-    if begriff:
-        # Begriff zum Session-State hinzufügen
-        st.session_state.entdeckte.add(begriff)
-        st.success(f"✅ Begriff '{begriff}' erfolgreich hinzugefügt!")
-    else:
-        st.warning("Bitte gib einen Begriff ein.")
-
-# Anzeigen der entdeckten Begriffe
-st.subheader("📚 Entdeckte Begriffe:")
-st.write(" | ".join(sorted(st.session_state.entdeckte)))
+# Beispiel-Inhalte – hier kannst du individuell Inhalte anzeigen
+if begriff == "Erythrozyt":
+    st.write("""
+        Erythrozyten sind die häufigsten Zellen im Blut und für den Sauerstofftransport zuständig.
+        Sie entstehen aus Stammzellen über die **Erythropoese**.
+    """)
+elif begriff == "T-Zelle":
+    st.write("T-Zellen sind Teil des adaptiven Immunsystems und entstehen in der Lymphopoese.")
+elif begriff == "Granulozyt":
+    st.write("Granulozyten sind eine Art von weißen Blutkörperchen, die in der Myelopoese entstehen.")
+elif begriff == "B-Zelle":
+    st.write("B-Zellen sind ein Teil des Immunsystems und entstehen in der Lymphopoese.")
+else:
+    st.info("Für diesen Begriff sind noch keine Infos hinterlegt.")
