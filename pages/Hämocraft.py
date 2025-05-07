@@ -1,3 +1,7 @@
+import sys
+import os
+import streamlit as st
+
 # Session-State initialisieren (muss ganz am Anfang stehen)
 if "entdeckte" not in st.session_state:
     st.session_state.entdeckte = set(["Stammzelle", "Blut", "Immunsystem", "Knochenmark"])
@@ -7,14 +11,11 @@ if "kombihistorie" not in st.session_state:
 
 
 
-import sys
-import os
-
 # Kombis.py liegt eine Ebene höher
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from kombis import kombiniere
 
-import streamlit as st
+
 
 STARTBEGRIFFE = ["Stammzelle", "Blut", "Immunsystem", "Knochenmark"]
 
