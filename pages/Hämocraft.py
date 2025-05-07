@@ -2,31 +2,23 @@ import sys
 import os
 import streamlit as st
 
-# Session-State initialisieren (muss ganz am Anfang stehen)
+# 🧠 Session-State initialisieren (ganz oben!)
 if "entdeckte" not in st.session_state:
     st.session_state.entdeckte = set(["Stammzelle", "Blut", "Immunsystem", "Knochenmark"])
 
 if "kombihistorie" not in st.session_state:
     st.session_state.kombihistorie = {}
 
-
-
-# Kombis.py liegt eine Ebene höher
+# 🔗 kombis.py importieren (eine Ebene höher)
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from kombis import kombiniere
-
-
-
-STARTBEGRIFFE = ["Stammzelle", "Blut", "Immunsystem", "Knochenmark"]
-
-# Session-State initialisieren
-if "entdeckte" not in st.session_state:
-    st.session_state.entdeckte = set(STARTBEGRIFFE)
 
 st.title("🧬 Hämatologie Learning Game – MVP")
 st.subheader("🔬 Begriffe kombinieren")
 
-begriff_liste = sorted(st.session_state.entdeckte)
+# 👉 Aktuell entdeckte Begriffe für die Auswahl
+begriff_liste = sorted(list(st.session_state.entdeckte))
+
 col1, col2 = st.columns(2)
 with col1:
     begriff1 = st.selectbox("Begriff 1", begriff_liste)
@@ -41,12 +33,16 @@ if st.button("Kombinieren"):
         if neu:
             if neu not in st.session_state.entdeckte:
                 st.session_state.entdeckte.add(neu)
-                st.session_state.kombihistorie[neu] = (begriff1, begriff2)  # ← Wichtig!
+                st.session_state.kombihistorie[neu] = (begriff1, begriff2)  # 🔁 Herkunft merken
                 st.success(f"✅ Neue Entdeckung: {neu}")
             else:
                 st.info(f"🔁 {neu} ist bereits entdeckt.")
         else:
             st.error("❌ Keine gültige Kombination.")
 
+# 📚 Ausgabe: entdeckte Begriffe
 st.subheader("📚 Entdeckte Begriffe")
-st.write(" | ".join(sorted(st.session_state.entdeckte)))
+if st.session_state.entdeckte:
+    st.write(" | ".join(sorted(st.session_state.entdeckte)))
+else:
+    st.info("Noch keine Begriffe entdeckt.")
