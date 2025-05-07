@@ -30,11 +30,12 @@ KOMBIS = {
 }
 
 
+KOMBIS = {}
+for (a, b), result in _kombis_roh.items():
+    KOMBIS[(a, b)] = result
+    KOMBIS[(b, a)] = result  # beide Richtungen
+
 def kombiniere(a, b):
-    return KOMBIS.get((a, b)) or KOMBIS.get((b, a))
-
-if "kombihistorie" not in st.session_state:
-    st.session_state.kombihistorie = {}
-
+    return KOMBIS.get((a, b))
 
 
