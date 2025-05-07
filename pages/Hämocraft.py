@@ -1,3 +1,12 @@
+# Session-State initialisieren (muss ganz am Anfang stehen)
+if "entdeckte" not in st.session_state:
+    st.session_state.entdeckte = set(["Stammzelle", "Blut", "Immunsystem", "Knochenmark"])
+
+if "kombihistorie" not in st.session_state:
+    st.session_state.kombihistorie = {}
+
+
+
 import sys
 import os
 
