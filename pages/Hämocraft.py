@@ -41,6 +41,7 @@ if st.button("Kombinieren"):
         if neu:
             if neu not in st.session_state.entdeckte:
                 st.session_state.entdeckte.add(neu)
+                st.session_state.kombihistorie[neu] = (begriff1, begriff2)  # ← Wichtig!
                 st.success(f"✅ Neue Entdeckung: {neu}")
             else:
                 st.info(f"🔁 {neu} ist bereits entdeckt.")
