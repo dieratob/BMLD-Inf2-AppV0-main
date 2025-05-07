@@ -31,7 +31,7 @@ KOMBIS = {
 
 
 KOMBIS = {}
-for (a, b), result in _kombis_roh.items():
+for (a, b), result in KOMBIS.items():
     KOMBIS[(a, b)] = result
     KOMBIS[(b, a)] = result  # beide Richtungen
 
