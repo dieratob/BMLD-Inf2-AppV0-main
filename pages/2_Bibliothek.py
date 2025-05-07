@@ -1,46 +1,33 @@
+# pages/2_Bibliothek.py
+
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import streamlit as st
 from kombis import KOMBIS
 
-st.title("📚 Hämatologie-Bibliothek")
-
-if "entdeckte" not in st.session_state:
-    st.session_state.entdeckte = set()
-if "kombihistorie" not in st.session_state:
-    st.session_state.kombihistorie = {}
-
-# Zustand für offenen Dialog
-if "offener_dialog" not in st.session_state:
-    st.session_state.offener_dialog = None
-
-# Alle Begriffe
+# Begriffe aus Kombis extrahieren
 alle_begriffe = set()
 for (a, b), result in KOMBIS.items():
     alle_begriffe.update([a, b, result])
 
-st.subheader("✅ Entdeckte Begriffe")
+entdeckte = st.session_state.get("entdeckte", set())
+kombihistorie = st.session_state.get("kombihistorie", {})
 
-for begriff in sorted(st.session_state.entdeckte):
-    if st.button(begriff):
-        st.session_state.offener_dialog = begriff
+st.title("📖 Begriffsbibliothek")
+st.caption("Klicke auf einen entdeckten Begriff, um die Herkunft zu sehen.")
 
-# Wenn ein Dialog aktiv ist
-if st.session_state.offener_dialog:
-    with st.dialog(f"🧬 Kombination für: {st.session_state.offener_dialog}"):
-        ziel = st.session_state.offener_dialog
-        kombis = [
-            f"{a} + {b} ➜ {c}"
-            for (a, b), c in KOMBIS.items()
-            if c == ziel
-        ]
-        if kombis:
-            st.write("Mögliche Kombination(en):")
-            for k in kombis:
-                st.markdown(f"- {k}")
+for begriff in sorted(alle_begriffe):
+    col1, col2 = st.columns([8, 2])
+    with col1:
+        if begriff in entdeckte:
+            if st.button(f"🔍 {begriff}", key=begriff):
+                ursprung = kombihistorie.get(begriff)
+                with st.modal(f"🧬 Kombination für: {begriff}"):
+                    if ursprung:
+                        st.write(f"{ursprung[0]} + {ursprung[1]} → **{begriff}**")
+                    else:
+                        st.info("Für diesen Begriff ist keine Kombination bekannt (z. B. Startbegriff).")
         else:
-            st.write("🔍 Keine bekannte Kombination gefunden.")
-
-        if st.button("❌ Schließen"):
-            st.session_state.offener_dialog = None
-
-st.subheader("📖 Alle möglichen Begriffe")
-st.write(" | ".join(sorted(alle_begriffe)))
+            st.markdown(f"🕵️‍♂️ *{begriff}* (noch nicht entdeckt)")
