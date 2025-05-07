@@ -1,6 +1,6 @@
 # kombis.py
 
-KOMBIS = {
+_kombis_roh = {
     ("Stammzelle", "Blut"): "Erythropoese",
     ("Blut", "Stammzelle"): "Erythropoese",
 
@@ -31,10 +31,11 @@ KOMBIS = {
 
 
 KOMBIS = {}
-for (a, b), result in KOMBIS.items():
+for (a, b), result in _kombis_roh.items():
     KOMBIS[(a, b)] = result
     KOMBIS[(b, a)] = result  # beide Richtungen
 
+# Kombinationsfunktion
 def kombiniere(a, b):
     return KOMBIS.get((a, b))
 
