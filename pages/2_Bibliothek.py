@@ -1,7 +1,7 @@
 import streamlit as st
 from Begriff import BEGRIFFSINFOS
 
-begriff = st.experimental_get_query_params().get("name", [None])[0]
+begriff = st.query_params.get("name", [None])[0]
 
 st.title(f"🔍 Detailansicht: {begriff}")
 
