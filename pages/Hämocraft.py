@@ -4,7 +4,7 @@ import streamlit as st
 
 # 🧠 Session-State initialisieren (ganz oben!)
 if "entdeckte" not in st.session_state:
-    st.session_state.entdeckte = set(["Stammzelle", "Blut", "Immunsystem", "Knochenmark", "Reifung"])
+    st.session_state.entdeckte = set(["Myeloische-Vorläuferzelle", "Immunsystem", "Lymphatisch-Vorläuferzelle", "Reifung"])
 
 if "kombihistorie" not in st.session_state:
     st.session_state.kombihistorie = {}
