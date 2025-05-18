@@ -1,22 +1,47 @@
-import streamlit as st
-
-# Begriff aus der URL abholen
-begriff = st.query_params.get("name")
-
-# Titel der Seite
-st.title(f"🔍 Detailansicht: {begriff}")
-
-# Beispiel-Inhalte – hier kannst du individuell Inhalte anzeigen
-if begriff == "Erythrozyt":
-    st.write("""
-        Erythrozyten sind die häufigsten Zellen im Blut und für den Sauerstofftransport zuständig.
-        Sie entstehen aus Stammzellen über die **Erythropoese**.
-    """)
-elif begriff == "T-Zelle":
-    st.write("T-Zellen sind Teil des adaptiven Immunsystems und entstehen in der Lymphopoese.")
-elif begriff == "Granulozyt":
-    st.write("Granulozyten sind eine Art von weißen Blutkörperchen, die in der Myelopoese entstehen.")
-elif begriff == "B-Zelle":
-    st.write("B-Zellen sind ein Teil des Immunsystems und entstehen in der Lymphopoese.")
-else:
-    st.info("Für diesen Begriff sind noch keine Infos hinterlegt.")
+BEGRIFFSINFOS = {
+    "Adaptive Immunantwort": "Spezifische Immunreaktion durch T- und B-Lymphozyten, die gezielt auf bestimmte Erreger reagiert.",
+    "B-Lymphozyt": "Lymphozyt, der Antikörper bildet; Teil der humoralen Immunantwort.",
+    "B. Lymphozyt": "Frühform des B-Lymphozyten (Bezeichnungsvariante).",
+    "B. Metamyelozyt": "Vorläuferzelle des Basophilen Granulozyten.",
+    "B. Myelozyt": "Entwicklungsstufe eines Basophilen vor dem Metamyelozyten.",
+    "B. Promyelzyt": "Vorstufe des B. Myelozyten, stammt vom Myeloblasten ab.",
+    "B.erythroblast": "Basophiler Erythroblast, frühe Erythrozytenvorstufe.",
+    "Basophiler": "Granulozyt mit Beteiligung an allergischen Reaktionen und Entzündungen.",
+    "E. Metamyelozyt": "Reife Entwicklungsstufe des eosinophilen Granulozyten.",
+    "E. Myelozyt": "Zwischenstufe beim eosinophilen Granulozyten.",
+    "E. Promyelzyt": "Frühform eosinophiler Granulozyten.",
+    "Entzündungsreaktion": "Abwehrreaktion des Immunsystems, an der v. a. Granulozyten beteiligt sind.",
+    "Eosinophiler": "Granulozyt, besonders aktiv bei Parasiteninfektionen und Allergien.",
+    "Erythrozyt": "Erythrozyten sind die häufigsten Zellen im Blut und für den Sauerstofftransport zuständig.",
+    "Granulozyt": "Gruppe weißer Blutkörperchen (Neutrophile, Eosinophile, Basophile).",
+    "Humorale Immunität": "Abwehr durch Antikörper (v. a. von B-Lymphozyten vermittelt).",
+    "Immunsystem": "Schutzsystem des Körpers gegen Krankheitserreger.",
+    "Immunüberwachung": "Erkennung und Beseitigung abnormaler Zellen, z. B. durch NK-Zellen.",
+    "Lymphatisch-Vorläuferzelle": "Stammzelle, aus der Lymphozyten entstehen.",
+    "Lymphoblast": "Frühe Vorstufe von T- oder B-Lymphozyten.",
+    "Lymphozyt": "Weiße Blutzelle, zuständig für spezifische Immunantwort.",
+    "Megakaryoblast": "Vorläuferzelle von Megakaryozyten.",
+    "Megakaryozyt": "Riesenzelle im Knochenmark, bildet Thrombozyten.",
+    "Monoblast": "Vorläuferzelle des Monozyten.",
+    "Monozyt": "Größte weiße Blutzelle, wandert ins Gewebe und wird zu Makrophagen.",
+    "Myeloblast": "Ursprungszelle der Granulozyten-Reihe.",
+    "Myeloische-Vorläuferzelle": "Stammzelle für Granulozyten, Erythrozyten, Monozyten, Megakaryozyten.",
+    "N. Myelozyt": "Neutrophiler Myelozyt, Zwischenstufe der Neutrophilenentwicklung.",
+    "N. Promyelzyt": "Neutrophile Frühform nach dem Myeloblasten.",
+    "N.Metamyelozyt": "Spätstadium neutrophiler Entwicklung.",
+    "NK-Zelle": "Natürliche Killerzelle, zerstört virusinfizierte Zellen und Tumorzellen.",
+    "Neutrophiler": "Häufigster Granulozyt, zuständig für akute Entzündungen.",
+    "Normoblast": "Spätere Erythrozytenvorstufe mit noch vorhandenem Zellkern.",
+    "Phagozytose": "Prozess, bei dem Zellen (z. B. Monozyten) Fremdstoffe „auffressen“.",
+    "Polychromatischer erythroblast": "Erythrozytenvorstufe mit Rest-RNA, grau-bläuliche Färbung.",
+    "Proerythroblast": "Erste erkennbare Erythrozytenvorstufe im Knochenmark.",
+    "Prolymphozyt": "Zwischenstufe zwischen Lymphoblast und reifem Lymphozyt.",
+    "Promegakaryozyt": "Zwischenstufe in der Thrombozytenentwicklung.",
+    "Promonozyt": "Vorläuferzelle des Monozyten.",
+    "Reifung": "Entwicklung von Vorläuferzellen zu funktionalen Blutzellen.",
+    "Retikulozyt": "Unreifer Erythrozyt ohne Zellkern, reift im Blut.",
+    "T-Lymphozyt": "Zelle der zellvermittelten Immunantwort, wichtig bei Virusabwehr.",
+    "Thrombozyten": "Blutplättchen, verantwortlich für die Blutgerinnung.",
+    "Unspezifische Abwehr": "Schnelle, allgemeine Immunreaktion z. B. durch Neutrophile.",
+    "Zellvermittelte Immunität": "Immunantwort durch T-Zellen, ohne Antikörper."
+}
