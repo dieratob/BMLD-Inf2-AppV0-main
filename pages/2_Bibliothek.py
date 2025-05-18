@@ -6,7 +6,7 @@ import streamlit as st
 
 # Pfad zur kombis.py eine Ebene höher
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from kombis import KOMBIS
+from pages.kombis import KOMBIS
 
 # Alle Begriffe sammeln aus den Kombinationen
 alle_begriffe = set()
