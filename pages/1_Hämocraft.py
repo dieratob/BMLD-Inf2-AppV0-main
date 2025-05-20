@@ -1,27 +1,15 @@
 import os
 import sys
 import streamlit as st
-from utils.data_manager import DataManager  # 👈 DataManager importieren
+from utils.data_manager import DataManager
 
-# 🔐 Wenn nicht eingeloggt, umleiten zur Startseite (Login)
+# 🔐 Login-Prüfung
 if st.session_state.get("authentication_status") != True:
     st.warning("Bitte zuerst einloggen.")
     st.switch_page("Start.py")
 
-# 📁 DataManager initialisieren & entdeckte Begriffe laden
-dm = DataManager()
-dm.load_user_data("entdeckte", "entdeckte.json", initial_value=[
-    "Myeloische-Vorläuferzelle", "Immunsystem", "Lymphatisch-Vorläuferzelle", "Reifung"
-])
-
-
-# Optional: in ein Set umwandeln für schnelle Verarbeitung
-entdeckte_set = set(st.session_state.entdeckte)
-
-# 📂 Absoluten Pfad zum Ordner "hidden_pages" berechnen
+# 📁 Kombis laden
 hidden_pages_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'hidden_pages'))
-
-# 📄 kombis.py importieren
 pfad_zur_kombis = os.path.join(hidden_pages_path, 'kombis.py')
 if not os.path.exists(pfad_zur_kombis):
     st.error("❌ kombis.py nicht gefunden. Stelle sicher, dass die Datei in hidden_pages/ liegt.")
@@ -31,15 +19,30 @@ else:
         sys.path.append(hidden_pages_path)
     from kombis import kombiniere
 
-# 🧠 Kombihistorie initialisieren
-if "kombihistorie" not in st.session_state:
-    st.session_state.kombihistorie = {}
+# 📦 DataManager initialisieren
+dm = DataManager()
+
+# 🎮 Startbegriffe
+START_BEGRIFFE = [
+    "Myeloische-Vorläuferzelle",
+    "Immunsystem",
+    "Lymphatisch-Vorläuferzelle",
+    "Reifung"
+]
+
+# 🔁 Begriffe laden oder initialisieren
+dm.load_user_data("entdeckte", "entdeckte.json", initial_value=START_BEGRIFFE)
+dm.load_user_data("kombihistorie", "kombihistorie.json", initial_value={})
+
+# Sicherstellen, dass entdeckte Begriffe als Set vorliegen
+if not isinstance(st.session_state.entdeckte, set):
+    st.session_state.entdeckte = set(st.session_state.entdeckte)
 
 # 🎮 Titel & Auswahl
 st.title("🧬 Hämocraft – Hämatologie Learning Game")
 st.subheader("🔬 Begriffe kombinieren")
 
-begriff_liste = sorted(list(entdeckte_set))
+begriff_liste = sorted(list(st.session_state.entdeckte))
 
 col1, col2 = st.columns(2)
 with col1:
@@ -56,13 +59,15 @@ if st.button("Kombinieren"):
         neu = kombiniere(begriff1, begriff2)
         st.write(f"🎯 Ergebnis: {neu}")
         if neu:
-            if neu not in entdeckte_set:
-                entdeckte_set.add(neu)
+            if neu not in st.session_state.entdeckte:
+                st.session_state.entdeckte.add(neu)
                 st.session_state.kombihistorie[neu] = (begriff1, begriff2)
                 st.success(f"✅ Neue Entdeckung: {neu}")
-                # 🧠 Begriffe im Session-State & Datei aktualisieren
-                st.session_state.entdeckte = list(entdeckte_set)
+                # Begriffe speichern
+                st.session_state.entdeckte = list(st.session_state.entdeckte)
                 dm.save_data("entdeckte")
+                dm.save_data("kombihistorie")
+                st.session_state.entdeckte = set(st.session_state.entdeckte)
             else:
                 st.info(f"🔁 {neu} ist bereits entdeckt.")
         else:
@@ -70,24 +75,17 @@ if st.button("Kombinieren"):
 
 # 📚 Ausgabe
 st.subheader("📚 Entdeckte Begriffe")
-if entdeckte_set:
-    st.write(" | ".join(sorted(entdeckte_set)))
+if st.session_state.entdeckte:
+    st.write(" | ".join(sorted(st.session_state.entdeckte)))
 else:
     st.info("Noch keine Begriffe entdeckt.")
 
-STARTBEGRIFFE = [
-    "Myeloische-Vorläuferzelle", "Immunsystem", "Lymphatisch-Vorläuferzelle", "Reifung"
-]
-
-# DataManager-Instanz holen
-dm = DataManager()
-
-# Trennlinie
-st.markdown("---")
-
-# Reset-Button
-if st.button("🔄 Entdeckte Begriffe zurücksetzen"):
-    st.session_state.entdeckte = set(STARTBEGRIFFE)
+# 🔄 Reset-Funktion
+if st.button("🔄 Reset – Alles zurücksetzen"):
+    st.session_state.entdeckte = set(START_BEGRIFFE)
+    st.session_state.kombihistorie = {}
+    st.session_state.entdeckte = list(st.session_state.entdeckte)
     dm.save_data("entdeckte")
-    st.success("✅ Entdeckte Begriffe wurden zurückgesetzt.")
-    st.experimental_rerun()  # Seite neu laden
+    dm.save_data("kombihistorie")
+    st.session_state.entdeckte = set(st.session_state.entdeckte)
+    st.success("✅ Alles zurückgesetzt.")
