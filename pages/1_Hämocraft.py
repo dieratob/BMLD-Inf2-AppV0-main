@@ -2,6 +2,12 @@ import os
 import sys
 import streamlit as st
 
+# Wenn nicht eingeloggt, umleiten zur Startseite (Login)
+if st.session_state.get("authentication_status") != True:
+    st.warning("Bitte zuerst einloggen.")
+    st.switch_page("Start.py")
+
+
 # Absoluten Pfad zum Ordner "hidden_pages" berechnen
 hidden_pages_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'hidden_pages'))
 

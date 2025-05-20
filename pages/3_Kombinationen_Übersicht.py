@@ -3,6 +3,11 @@ import pandas as pd
 from hidden_pages.kombis import _kombis_roh  # nur _kombis_roh enthält die eindeutigen Original-Kombis
 
 
+# Wenn nicht eingeloggt, umleiten zur Startseite (Login)
+if st.session_state.get("authentication_status") != True:
+    st.warning("Bitte zuerst einloggen.")
+    st.switch_page("Start.py")
+
 st.title("🔍 Übersicht aller Kombinationen")
 
 st.markdown("""

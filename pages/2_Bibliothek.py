@@ -1,6 +1,12 @@
 import streamlit as st
 from urllib.parse import quote
 
+# Wenn nicht eingeloggt, umleiten zur Startseite (Login)
+if st.session_state.get("authentication_status") != True:
+    st.warning("Bitte zuerst einloggen.")
+    st.switch_page("Start.py")
+
+
 entdeckte_begriffe = st.session_state.get("entdeckte", set())
 
 st.title("📚 Hämatologie Bibliothek")
