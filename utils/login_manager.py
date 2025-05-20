@@ -121,7 +121,6 @@ class LoginManager:
             The password must be 8-20 characters long and include at least one uppercase letter, 
             one lowercase letter, one digit, and one special character from @$!%*?&.
             """)
-            if res[1] is not None:
             st.success(f"User {res[1]} registered successfully")
     try:
         # Aktualisiere self.auth_credentials mit den neuen Daten
