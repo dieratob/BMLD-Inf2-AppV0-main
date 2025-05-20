@@ -25,7 +25,7 @@ st.dataframe(df, use_container_width=True)
 
 # Abschnitt: Hämatopoese-Bild
 st.subheader("🧬 Hämatopoese-Diagramm")
-st.image("hematopoiesishumandiagram-kopie_original.jpg", use_column_width=True)
+st.image("../images/hematopoiesishumandiagram-kopie_original.jpg", use_container_width=True)
 
 st.markdown("""
 **Quelle des Bildes:**  
