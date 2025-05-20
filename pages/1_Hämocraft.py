@@ -81,8 +81,6 @@ with col1:
         st.session_state.entdeckte = list(st.session_state.entdeckte)  # Daten speichern ggf.
         dm.save_data("entdeckte")
         dm.save_data("kombihistorie")
-        st.experimental_set_query_params()  # Optional, falls nötig
-        st.experimental_rerun()  # Falls du einen Reload möchtest
         st.switch_page("Bibliothek")  # Name deiner Bibliothek-Seite hier anpassen
 
 with col2:
@@ -90,9 +88,7 @@ with col2:
         st.session_state.entdeckte = list(st.session_state.entdeckte)
         dm.save_data("entdeckte")
         dm.save_data("kombihistorie")
-        st.experimental_set_query_params()
-        st.experimental_rerun()
-        st.switch_page("Kombinationen")  # Name deiner Kombis-Seite hier anpassen
+        st.switch_page("Kombinationen_Übersicht")  # Name deiner Kombis-Seite hier anpassen
 
 # 🔄 Reset-Funktion
 if st.button("🔄 Reset – Alles zurücksetzen"):
