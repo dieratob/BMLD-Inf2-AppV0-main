@@ -74,3 +74,20 @@ if entdeckte_set:
     st.write(" | ".join(sorted(entdeckte_set)))
 else:
     st.info("Noch keine Begriffe entdeckt.")
+
+STARTBEGRIFFE = [
+    "Myeloische-Vorläuferzelle", "Immunsystem", "Lymphatisch-Vorläuferzelle", "Reifung"
+]
+
+# DataManager-Instanz holen
+dm = DataManager()
+
+# Trennlinie
+st.markdown("---")
+
+# Reset-Button
+if st.button("🔄 Entdeckte Begriffe zurücksetzen"):
+    st.session_state.entdeckte = set(STARTBEGRIFFE)
+    dm.save_data("entdeckte")
+    st.success("✅ Entdeckte Begriffe wurden zurückgesetzt.")
+    st.experimental_rerun()  # Seite neu laden
