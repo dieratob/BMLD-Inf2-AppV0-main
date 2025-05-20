@@ -121,14 +121,19 @@ class LoginManager:
             The password must be 8-20 characters long and include at least one uppercase letter, 
             one lowercase letter, one digit, and one special character from @$!%*?&.
             """)
-            res = self.authenticator.register_user()
             if res[1] is not None:
-                st.success(f"User {res[1]} registered successfully")
-                try:
-                    self._save_auth_credentials()
-                    st.success("Credentials saved successfully")
-                except Exception as e:
-                    st.error(f"Failed to save credentials: {e}")
+            st.success(f"User {res[1]} registered successfully")
+    try:
+        # Aktualisiere self.auth_credentials mit den neuen Daten
+        self.auth_credentials = self.authenticator.credentials
+
+        # Speichern der neuen Konfiguration
+        self._save_auth_credentials()
+        st.success("Credentials saved successfully")
+    except Exception as e:
+        st.error(f"Failed to save credentials: {e}")
+
+
             if stop:
                 st.stop()
 
