@@ -10,7 +10,10 @@ if st.session_state.get("authentication_status") != True:
 
 # 📁 DataManager initialisieren & entdeckte Begriffe laden
 dm = DataManager()
-dm.load_user_data("entdeckte", "entdeckte.json", initial_value=[])  # Liste statt Set
+dm.load_user_data("entdeckte", "entdeckte.json", initial_value=[
+    "Myeloische-Vorläuferzelle", "Immunsystem", "Lymphatisch-Vorläuferzelle", "Reifung"
+])
+
 
 # Optional: in ein Set umwandeln für schnelle Verarbeitung
 entdeckte_set = set(st.session_state.entdeckte)
