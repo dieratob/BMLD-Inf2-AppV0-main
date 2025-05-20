@@ -1,9 +1,8 @@
 import streamlit as st
 from hidden_pages.Begriff import BEGRIFFSINFOS
 
-# ✅ Neue Methode für URL-Parameter
-params = st.query_params
-begriff = params.get("name", [None])[0]
+# Neue API verwenden
+begriff = st.query_params.get("name")
 
 st.title(f"🔍 Infos: {begriff}")
 
