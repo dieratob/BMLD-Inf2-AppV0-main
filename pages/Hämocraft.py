@@ -8,7 +8,7 @@ if not os.path.exists(pfad_zur_kombis):
     st.error("❌ kombis.py nicht gefunden. Stelle sicher, dass die Datei im selben Verzeichnis liegt oder passe den Pfad an.")
 else:
     sys.path.append(os.path.dirname(pfad_zur_kombis))
-    from pages.kombis import kombiniere
+    from hidden_pages.kombis import kombiniere
 
 # 🧠 Session-State initialisieren
 if "entdeckte" not in st.session_state:

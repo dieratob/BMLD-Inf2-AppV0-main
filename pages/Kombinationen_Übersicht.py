@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from kombis import _kombis_roh  # nur _kombis_roh enthält die eindeutigen Original-Kombis
+from hidden_pages.kombis import _kombis_roh  # nur _kombis_roh enthält die eindeutigen Original-Kombis
 
 
 st.title("🔍 Übersicht aller Kombinationen")

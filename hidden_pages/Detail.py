@@ -1,5 +1,5 @@
 import streamlit as st
-from Begriff import BEGRIFFSINFOS
+from hidden_pages.Begriff import BEGRIFFSINFOS
 
 params = st.experimental_get_query_params()
 begriff = params.get("name", [None])[0]
