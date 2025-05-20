@@ -73,12 +73,26 @@ if st.button("Kombinieren"):
         else:
             st.error("❌ Keine gültige Kombination.")
 
-# 📚 Ausgabe
-st.subheader("📚 Entdeckte Begriffe")
-if st.session_state.entdeckte:
-    st.write(" | ".join(sorted(st.session_state.entdeckte)))
-else:
-    st.info("Noch keine Begriffe entdeckt.")
+st.subheader("Navigation")
+
+col1, col2 = st.columns(2)
+with col1:
+    if st.button("📖 Zur Bibliothek"):
+        st.session_state.entdeckte = list(st.session_state.entdeckte)  # Daten speichern ggf.
+        dm.save_data("entdeckte")
+        dm.save_data("kombihistorie")
+        st.experimental_set_query_params()  # Optional, falls nötig
+        st.experimental_rerun()  # Falls du einen Reload möchtest
+        st.switch_page("Bibliothek")  # Name deiner Bibliothek-Seite hier anpassen
+
+with col2:
+    if st.button("🔍 Zur Kombinationen Übersicht"):
+        st.session_state.entdeckte = list(st.session_state.entdeckte)
+        dm.save_data("entdeckte")
+        dm.save_data("kombihistorie")
+        st.experimental_set_query_params()
+        st.experimental_rerun()
+        st.switch_page("Kombinationen")  # Name deiner Kombis-Seite hier anpassen
 
 # 🔄 Reset-Funktion
 if st.button("🔄 Reset – Alles zurücksetzen"):
