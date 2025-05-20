@@ -3,6 +3,8 @@ from urllib.parse import quote
 from hidden_pages.Begriff import BEGRIFFSINFOS
 import os
 
+st.write("Aktuelle Seite:", __file__)
+
 # 1. Aktuelle Seite ermitteln
 current_page = os.path.basename(__file__).replace(".py", "")
 
