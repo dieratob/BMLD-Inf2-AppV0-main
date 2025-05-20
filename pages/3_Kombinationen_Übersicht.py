@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from hidden_pages.kombis import _kombis_roh  # nur _kombis_roh enthält die eindeutigen Original-Kombis
+from utils.navigation import back_to_main
 
 
 # Wenn nicht eingeloggt, umleiten zur Startseite (Login)
@@ -29,6 +30,4 @@ kombis_liste = [
 df = pd.DataFrame(kombis_liste)
 st.dataframe(df, use_container_width=True)
 
-def back_to_main():
-    if st.button("🔙 Zurück zu Hämocraft"):
-        st.switch_page("1_Hämocraft.py")  
+back_to_main()

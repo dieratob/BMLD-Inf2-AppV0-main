@@ -1,5 +1,7 @@
 import streamlit as st
 from urllib.parse import quote
+from utils.navigation import back_to_main
+
 
 # Wenn nicht eingeloggt, umleiten zur Startseite (Login)
 if st.session_state.get("authentication_status") != True:
@@ -18,6 +20,4 @@ if entdeckte_begriffe:
 else:
     st.info("Noch keine Begriffe entdeckt.")
 
-def back_to_main():
-    if st.button("🔙 Zurück zu Hämocraft"):
-        st.switch_page("1_Hämocraft.py") 
+back_to_main()
