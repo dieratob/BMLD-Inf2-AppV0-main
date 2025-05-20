@@ -81,14 +81,14 @@ with col1:
         st.session_state.entdeckte = list(st.session_state.entdeckte)  # Daten speichern ggf.
         dm.save_data("entdeckte")
         dm.save_data("kombihistorie")
-        st.switch_page("Bibliothek")  # Name deiner Bibliothek-Seite hier anpassen
+        st.switch_page("pages/2_Bibliothek.py")  # Name deiner Bibliothek-Seite hier anpassen
 
 with col2:
     if st.button("🔍 Zur Kombinationen Übersicht"):
         st.session_state.entdeckte = list(st.session_state.entdeckte)
         dm.save_data("entdeckte")
         dm.save_data("kombihistorie")
-        st.switch_page("Kombinationen_Übersicht")  # Name deiner Kombis-Seite hier anpassen
+        st.switch_page("pages/3_Kombinationen_Übersicht.py")  # Name deiner Kombis-Seite hier anpassen
 
 # 🔄 Reset-Funktion
 if st.button("🔄 Reset – Alles zurücksetzen"):
