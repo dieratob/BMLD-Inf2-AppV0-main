@@ -51,4 +51,11 @@ for (a, b), result in _kombis_roh.items():
 def kombiniere(a, b):
     return KOMBIS.get((a, b))
 
+entdeckte = st.session_state.get("entdeckte", [])
+
+if neuer_begriff not in entdeckte:
+    entdeckte.append(neuer_begriff)
+    st.session_state["entdeckte"] = entdeckte
+    dm.save_data("entdeckte")
+
 
