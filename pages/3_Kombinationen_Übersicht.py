@@ -29,3 +29,6 @@ kombis_liste = [
 df = pd.DataFrame(kombis_liste)
 st.dataframe(df, use_container_width=True)
 
+def back_to_main():
+    if st.button("🔙 Zurück zu Hämocraft"):
+        st.switch_page("1_Hämocraft.py")  

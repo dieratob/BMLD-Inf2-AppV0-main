@@ -17,3 +17,7 @@ if entdeckte_begriffe:
         st.markdown(f"- [{begriff}]({link})")
 else:
     st.info("Noch keine Begriffe entdeckt.")
+
+def back_to_main():
+    if st.button("🔙 Zurück zu Hämocraft"):
+        st.switch_page("1_Hämocraft.py") 
