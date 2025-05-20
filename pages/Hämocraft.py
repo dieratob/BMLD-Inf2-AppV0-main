@@ -1,14 +1,18 @@
-import sys
 import os
+import sys
 import streamlit as st
 
-# 📁 Sicherstellen, dass kombis.py im gleichen Projekt gefunden wird
-pfad_zur_kombis = os.path.abspath(os.path.join(os.path.dirname(__file__), 'kombis.py'))
+# Absoluten Pfad zum Ordner "hidden_pages" berechnen
+hidden_pages_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'hidden_pages'))
+
+# Prüfen, ob Datei existiert
+pfad_zur_kombis = os.path.join(hidden_pages_path, 'kombis.py')
 if not os.path.exists(pfad_zur_kombis):
-    st.error("❌ kombis.py nicht gefunden. Stelle sicher, dass die Datei im selben Verzeichnis liegt oder passe den Pfad an.")
+    st.error("❌ kombis.py nicht gefunden. Stelle sicher, dass die Datei in hidden_pages/ liegt.")
 else:
-    sys.path.append(os.path.dirname(pfad_zur_kombis))
-    from hidden_pages.kombis import kombiniere
+    if hidden_pages_path not in sys.path:
+        sys.path.append(hidden_pages_path)
+    from kombis import kombiniere  # ohne .py-Endung und ohne "hidden_pages."
 
 # 🧠 Session-State initialisieren
 if "entdeckte" not in st.session_state:
