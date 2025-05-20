@@ -18,7 +18,7 @@ if "kombihistorie" not in st.session_state:
     st.session_state.kombihistorie = {}
 
 # 🎮 Titel & Auswahl
-st.title("🧬 Hämatologie Learning Game – MVP")
+st.title("🧬 Hämocraft – Hämatologie Learning Game")
 st.subheader("🔬 Begriffe kombinieren")
 
 begriff_liste = sorted(list(st.session_state.entdeckte))
