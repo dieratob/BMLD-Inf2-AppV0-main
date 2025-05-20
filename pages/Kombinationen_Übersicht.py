@@ -22,3 +22,13 @@ kombis_liste = [
 # DataFrame erzeugen und anzeigen
 df = pd.DataFrame(kombis_liste)
 st.dataframe(df, use_container_width=True)
+
+# Abschnitt: Hämatopoese-Bild
+st.subheader("🧬 Hämatopoese-Diagramm")
+st.image("hematopoiesishumandiagram-kopie_original.jpg", use_column_width=True)
+
+st.markdown("""
+**Quelle des Bildes:**  
+[Hämatopoese Diagramm auf DocCheck](https://www.doccheck.com/de/detail/photos/15065-haematopoese-diagramm)  
+© DocCheck AG – Nutzung nur mit Genehmigung des Urhebers.
+""")
