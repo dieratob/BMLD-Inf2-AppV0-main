@@ -40,7 +40,7 @@ if not isinstance(st.session_state.entdeckte, set):
 
 # 🎮 Titel & Auswahl
 st.title("🧬 Hämocraft – Hämatologie Learning Game")
-st.subheader("🔬 Begriffe kombinieren")
+st.subheader("🔬 Wähle zwei Begriffe aus der Liste, um sie zu kombinieren")
 
 begriff_liste = sorted(list(st.session_state.entdeckte))
 
