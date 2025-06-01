@@ -26,7 +26,7 @@ import streamlit as st
 
 st.title("Willkommen zu Hämocraft!")
 
-- "Viel Spass beim kombinieren!"
+"Viel Spass beim kombinieren!"
 # !! WICHTIG: Eure Emails müssen in der App erscheinen!!
 
 # Streamlit über den Text unten direkt in die App - cool!
