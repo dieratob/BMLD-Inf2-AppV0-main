@@ -35,7 +35,7 @@ Diese App wurde von folgenden Personen entwickelt:
 - Dierauer Tobias (dieratob@students.zhaw.ch)
 - Assetta Anselmo (assetans@students.zhaw.ch)
 
-basierend auf dem Grundgerüst von:
+Basierend auf dem Grundgerüst von:
 
 Samuel Wehrli (wehs@zhaw.ch)
 """
